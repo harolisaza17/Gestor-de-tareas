@@ -5,7 +5,7 @@ const { Pool } = pg;
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
-export const DBConection = new Pool({
+export const DBConnection = new Pool({
     host: DB_HOST,
     port: DB_PORT,  
     user: DB_USER,
@@ -15,7 +15,7 @@ export const DBConection = new Pool({
 
 export const connectDB = async () => {
     try {
-        await DBConection.connect();
+        await DBConnection.connect();
         console.log('Database connected successfully');
     }
     catch{
