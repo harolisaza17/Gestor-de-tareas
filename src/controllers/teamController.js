@@ -1,10 +1,10 @@
-import {DBConection }  from "../db/index.js"
-import { TEAMSQUERIES, TEAMMEMBERQUERIES, TASKQUERIES} from "../queries/dbqueries.js"
+import { DBConnection } from "../db/index.js"
+import {  TEAMSQUERIES, TEAMMEMBERQUERIES } from "../queries/db.queries.js"
 
 export const postTeam = async (req, res, next) => {
     const team = req.body;
 
-    const newTeam = await DBConection.query(TEAMSQUERIES.CREATE_TEAM, [
+    const newTeam = await DBConnection.query(TEAMSQUERIES.CREATE_TEAM, [
         team.name,
         team.createdBy
     ]);
@@ -21,7 +21,7 @@ export const postTeam = async (req, res, next) => {
 // agregar un miembro a un equipo
 export const addMember = async (req, res, next) => {
     const { userId, teamId } = req.body;
-    const newMember = await DBConection.query(TEAMMEMBERQUERIES.ADD_MEMBER, [
+    const newMember = await DBConnection.query(TEAMMEMBERQUERIES.ADD_MEMBER, [
       userId,
       teamId,
     ]);
@@ -35,7 +35,7 @@ export const addMember = async (req, res, next) => {
 // obtener todos los miembros de un equipo
 export const getMembers = async (req, res) => {
     const { id: teamId } = req.params;
-    const members = await DBConection.query(TEAMMEMBERQUERIES.GET_MEMBERS, [
+    const members = await DBConnection.query(TEAMMEMBERQUERIES.GET_MEMBERS, [
       teamId,
     ]);
     res.status(200).json({
