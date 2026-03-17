@@ -37,39 +37,6 @@ src/
 
 ---
 
-# Base de Datos
-
-El sistema utiliza PostgreSQL con las siguientes tablas:
-
-# users
-
-* id
-* name
-* email
-* password
-
-## teams
-
-* id
-* name
-* created_by
-
-###  team_members
-
-* user_id
-* team_id
-
-#### tasks
-
-* id
-* title
-* description
-* status
-* assigned_to
-* team_id
-
----
-
 ##  Instalación
 
 1. Clonar el repositorio:
@@ -184,9 +151,9 @@ Se utiliza bcrypt para proteger las contraseñas:
 
 ###  Tareas (`/tasks`)
 
-####  Obtener tareas
+####  Obtener tareas por equipo
 
-**GET** `/tasks`
+**GET** `/tasks/1`
 
 ---
 
@@ -241,13 +208,6 @@ La API puede ser probada usando:
 * Postman
 * Thunder Client
 
-## Base de datos
-
-El archivo `database/schema.sql` contiene la estructura de la base de datos.
-
-Para ejecutarlo:
-
-psql -U usuario -d nombre_db -f database/schema.sql
 
 
 
