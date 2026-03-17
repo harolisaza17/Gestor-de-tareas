@@ -21,6 +21,7 @@ export const TEAMMEMBERQUERIES = {
 };
 
 export const TASKQUERIES = {
+  GET_ALL_TASKS: "SELECT * FROM tasks",
   GET_TASKS: "SELECT * FROM tasks WHERE team_id = $1",
   GET_TASK_BY_ID: "SELECT * FROM tasks WHERE id = $1",
   CREATE_TASK:

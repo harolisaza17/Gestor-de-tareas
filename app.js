@@ -4,9 +4,8 @@ import {connectDB} from "./src/db/index.js"
 
 
 import authRoutes from "./src/routes/authRotes.js"
-
-
 import teamRoutes from "./src/routes/teamRotes.js"
+import taskRoutes from "./src/routes/taskRoutes.js"
  
 
 
@@ -15,7 +14,7 @@ const PORT = process.env.SRV_PORT
 
 app.use(express.json())
 
-app.use("/", authRoutes, teamRoutes)
+app.use("/", authRoutes, teamRoutes, taskRoutes)
 
 
 

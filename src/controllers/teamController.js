@@ -1,6 +1,7 @@
 import { DBConnection } from "../db/index.js"
 import {  TEAMSQUERIES, TEAMMEMBERQUERIES } from "../queries/db.queries.js"
 
+// crear un nuevo equipo
 export const postTeam = async (req, res, next) => {
     const team = req.body;
 
@@ -20,7 +21,18 @@ export const postTeam = async (req, res, next) => {
 
 // agregar un miembro a un equipo
 export const addMember = async (req, res, next) => {
-    const { userId, teamId } = req.body;
+    const { id: teamId } = req.params;
+    const { userId } = req.body;
+    if (!teamId || !userId) {
+      return res.status(400).json({ msg: "teamId y userId son requeridos" });
+    }
+    if (req.body.teamId && Number(req.body.teamId) !== Number(teamId)) {
+      return res.status(400).json({ msg: "teamId no coincide con el equipo" });
+    }
+    const team = await DBConnection.query(TEAMSQUERIES.GET_TEAM_BY_ID, [teamId]);
+    if (team.rows.length === 0) {
+      return res.status(404).json({ msg: "Team no encontrado" });
+    }
     const newMember = await DBConnection.query(TEAMMEMBERQUERIES.ADD_MEMBER, [
       userId,
       teamId,
@@ -35,6 +47,13 @@ export const addMember = async (req, res, next) => {
 // obtener todos los miembros de un equipo
 export const getMembers = async (req, res) => {
     const { id: teamId } = req.params;
+    if (!teamId) {
+      return res.status(400).json({ msg: "teamId requerido" });
+    }
+    const team = await DBConnection.query(TEAMSQUERIES.GET_TEAM_BY_ID, [teamId]);
+    if (team.rows.length === 0) {
+      return res.status(404).json({ msg: "Team no encontrado" });
+    }
     const members = await DBConnection.query(TEAMMEMBERQUERIES.GET_MEMBERS, [
       teamId,
     ]);

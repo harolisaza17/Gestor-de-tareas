@@ -16,9 +16,9 @@ export const DBConnection = new Pool({
 export const connectDB = async () => {
     try {
         await DBConnection.connect();
-        console.log('Database connected successfully');
+        console.log('Conexión a la base de datos exitosa');
     }
-    catch{
-        error => console.error('Error connecting to the database:', error);
+    catch(error) {
+        console.error('Error al conectar a la base de datos:', error);
     }
 };
