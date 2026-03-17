@@ -1,98 +1,69 @@
-#  Gestor de Tareas por Equipos API
+# Gestor de Tareas por Equipos API
 
-API REST desarrollada con Node.js y Express que permite a los usuarios registrarse, crear equipos y gestionar tareas dentro de esos equipos.
+API REST con Node.js, Express y PostgreSQL para registrar usuarios, crear equipos y gestionar tareas por equipo.
 
-Este proyecto implementa una arquitectura **MVC**, autenticación segura con bcrypt y relaciones en base de datos PostgreSQL.
+## Requisitos
+- Node.js 18+
+- PostgreSQL 14+
 
---
-
-
-#  Arquitectura
-
-El proyecto sigue el patrón **MVC (Modelo - Vista - Controlador)**:
-
-```bash
-src/
-├── controllers/
-│   ├── authController.js
-│   ├── teamController.js
-│   └── taskController.js
-├── models/
-│   ├── userModel.js
-│   ├── teamModel.js
-│   └── taskModel.js
-├── routes/
-│   ├── authRoutes.js
-│   ├── teamRoutes.js
-│   └── taskRoutes.js
-├── db/
-│   └── index.js
-└── app.js
+## Arquitectura
+Estructura principal del proyecto:
+```text
+.
+|-- app.js
+|-- src/
+|   |-- controllers/
+|   |   |-- authController.js
+|   |   |-- teamController.js
+|   |   `-- taskController.js
+|   |-- db/
+|   |   `-- index.js
+|   |-- queries/
+|   |   `-- db.queries.js
+|   `-- routes/
+|       |-- authRotes.js
+|       |-- teamRotes.js
+|       `-- taskRoutes.js
+`-- database/
+    `-- schema.sql
 ```
-
-* **Controllers** -lógica de negocio
-* **Models** - consultas SQL
-* **Routes** - definición de endpoints
-* **db** - conexión a PostgreSQL
-
----
-
-##  Instalación
-
-1. Clonar el repositorio:
-
-`bash
+## Clonar el repositorio:
+```bash
 git clone https://github.com/harolisaza17/Gestor-de-tareas.git
-
-
-2. Entrar al proyecto:
-
+```
+## Entrar al proyecto:
 ```bash
 cd gestor-de-tareas
 ```
-
-3. Instalar dependencias:
-
+## Instalacion
 ```bash
 npm install
 ```
 
-4. Crear archivo `.env` en la raíz:
-
+## Variables de entorno
+Crea un archivo `.env` en la raiz con:
 ```env
+SRV_PORT=3500
+
 DB_HOST=localhost
-DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=tu_contrasena
-DB_NAME=taskflow
-PORT=3000
+DB_NAME=taskFlow
+DB_PORT=5432
 ```
 
-5. Ejecutar el proyecto:
+## Base de datos
+El schema esta en `database/schema.sql`.
 
+
+## Ejecutar el servidor
 ```bash
 npm run dev
 ```
 
----
-
-##  Autenticación
-
-Se utiliza bcrypt para proteger las contraseñas:
-
-* Las contraseñas se almacenan encriptadas
-* Se validan usando `bcrypt.compare()`
-
----
-
-##  Endpoints
-
-###  Autenticación (`/auth`)
-
-####  Registrar usuario
-
-**POST** `/auth/register`
-
+## Endpoints
+### Autenticacion
+- `POST /auth/register`
 ```json
 {
   "name": "Harol",
@@ -101,12 +72,7 @@ Se utiliza bcrypt para proteger las contraseñas:
 }
 ```
 
----
-
-####  Login
-
-**POST** `/auth/login`
-
+- `POST /auth/login`
 ```json
 {
   "email": "harol@email.com",
@@ -114,102 +80,56 @@ Se utiliza bcrypt para proteger las contraseñas:
 }
 ```
 
----
-
-###  Equipos (`/teams`)
-
-####  Crear equipo
-
-**POST** `/teams`
-
+### Equipos
+- `POST /teams`
 ```json
 {
   "name": "Equipo Desarrollo",
-  "created_by": 1
+  "createdBy": 1
 }
 ```
 
----
-
-####  Agregar miembro
-
-**POST** `/teams/:id/members`
-
+- `POST /teams/:id/members`
 ```json
 {
-  "user_id": 2
+  "userId": 2
 }
 ```
 
----
+- `GET /teams/:id/members`
 
-####  Listar miembros
+### Tareas (por equipo)
+- `GET /tasks/:id` (id = teamId)
 
-**GET** `/teams/:id/members`
-
----
-
-###  Tareas (`/tasks`)
-
-####  Obtener tareas por equipo
-
-**GET** `/tasks/1`
-
----
-
-####  Crear tarea
-
-**POST** `/tasks`
-
+- `POST /tasks`
 ```json
 {
   "title": "Crear API",
   "description": "Desarrollar endpoints",
-  "assigned_to": 1,
-  "team_id": 1
+  "assignedTo": 1,
+  "teamId": 1
 }
 ```
 
----
-
-####  Editar tarea
-
-**PUT** `/tasks/:id`
-
+- `PUT /tasks/:id`
 ```json
 {
   "title": "Actualizar API",
-  "status": "completado"
+  "description": "Nuevo detalle",
+  "status": "en_progreso",
+  "assignedTo": 1
 }
 ```
 
----
+- `DELETE /tasks/:id`
 
-####  Eliminar tarea
-
-**DELETE** `/tasks/:id`
-
----
-
-##  Scripts
-
+## Scripts
 ```json
 "scripts": {
-  "dev": "node --env-file=.env --watch src/app.js"
+  "dev": "node --env-file=.env --watch app.js",
+  "start": "node app.js"
 }
 ```
 
----
-
-##  Pruebas
-
-La API puede ser probada usando:
-
-* Postman
-* Thunder Client
-
-
-
-
-
-
+## Pruebas
+Puedes probar la API con Postman o Thunder Client.
